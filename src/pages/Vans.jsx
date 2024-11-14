@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import ProductTile from "../components/ProductTile.jsx"
 
 
 export default function Vans() {
@@ -10,7 +11,16 @@ export default function Vans() {
             .then((json) => setVehicleData(json))
     }, [])
 
+    const productElements = vehicleData.map(
+        vehicle => (<ProductTile vehicle={vehicle}/>)
+    )
+
     return (
-        <h1>Vans page goes here 🚐</h1>
+        <div className="van-list-container">
+            <h1>Explore our van options</h1>
+            <div className="van-list">
+                {productElements}
+            </div>
+        </div>
     )
 }
