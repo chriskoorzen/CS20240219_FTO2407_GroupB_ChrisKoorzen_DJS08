@@ -3,12 +3,12 @@ import ProductTile from "../components/ProductTile.jsx"
 
 
 export default function Vans() {
-    const [vehicleData, setVehicleData] = useState(null)
+    const [vehicleData, setVehicleData] = useState([])
 
     useEffect(() => {
         fetch("/api/vans")
             .then((response) => response.json())
-            .then((json) => setVehicleData(json))
+            .then((json) => setVehicleData(json.vans))
     }, [])
 
     const productElements = vehicleData.map(
