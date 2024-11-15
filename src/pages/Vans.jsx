@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useSearchParams, button } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 
 import ProductTile from "../components/ProductTile.jsx"
 
@@ -37,7 +37,12 @@ export default function Vans() {
             <div className="van-list">
                 {
                     productElements
-                    .map(vehicle => (<ProductTile vehicle={vehicle}/>))
+                    .map(vehicle => (
+                        <ProductTile 
+                            key={vehicle.id} 
+                            vehicle={vehicle} 
+                            navState={ typeFilter && {search: `?${searchParams.toString()}`} }/>
+                    ))
                 }
             </div>
         </div>

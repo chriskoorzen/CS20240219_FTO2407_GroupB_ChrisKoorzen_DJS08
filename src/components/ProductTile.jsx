@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom"
 
 
-export default function ProductTile({vehicle}) {
+export default function ProductTile({vehicle, navState}) {
     
     return (
-        <div key={vehicle.id} className="van-tile">
-            <Link to={vehicle.id}>
+        <div className="van-tile">
+            <Link to={vehicle.id} state={navState}>
                 <img src={vehicle.imageUrl} />
                 <div className="van-info">
                     <h3>{vehicle.name}</h3>

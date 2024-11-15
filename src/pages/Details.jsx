@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useLocation, Link } from "react-router-dom"
 
 
 export default function Details() {
     const routeParams = useParams()
     const [product, setProduct] = useState(null)
+    const location = useLocation()
 
     useEffect(() => {
         fetch(`/api/vans/${routeParams.id}`)
@@ -17,18 +18,33 @@ export default function Details() {
      * and re-rendered from scratch when we navigate back to it.
     */ 
 
+    const search = location.state?.search || ""
+
     return (
         <div className="van-detail-container">
+            
             {product ? (
-                <div className="van-detail">
-                    <img src={product.imageUrl} />
-                    <i className={`van-type ${product.type} selected`}>{product.type}</i>
-                    <h2>{product.name}</h2>
-                    <p className="van-price"><span>${product.price}</span>/day</p>
-                    <p>{product.description}</p>
-                    <button className="link-button">Rent this van</button>
-                </div>
-            ) : <h2>Loading...</h2>}
+                <>
+                    <Link
+                        to={`..${search}`}
+                        relative="path"
+                        className="back-button"
+                    >
+                        &larr; <span>Back to {search ? product.type : "all"} vans</span>
+                    </Link>
+
+                    <div className="van-detail">
+                        <img src={product.imageUrl} />
+                        <i className={`van-type ${product.type} selected`}>{product.type}</i>
+                        <h2>{product.name}</h2>
+                        <p className="van-price"><span>${product.price}</span>/day</p>
+                        <p>{product.description}</p>
+                        <button className="link-button">Rent this van</button>
+                    </div>
+                </>
+                ) 
+                : <h2>Loading...</h2>
+            }
         </div>
     )
 }
