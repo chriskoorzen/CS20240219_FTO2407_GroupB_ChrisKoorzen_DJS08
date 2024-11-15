@@ -5,7 +5,7 @@ export default function ProductTile({vehicle}) {
     
     return (
         <div key={vehicle.id} className="van-tile">
-            <Link to={`/vans/${vehicle.id}`}>
+            <Link to={vehicle.id}>
                 <img src={vehicle.imageUrl} />
                 <div className="van-info">
                     <h3>{vehicle.name}</h3>
