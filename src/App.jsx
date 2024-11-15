@@ -2,6 +2,7 @@ import { HashRouter, Routes, Route, Link } from "react-router-dom"
 
 import Layout from "./components/Layout.jsx"
 import Home from "./pages/Home.jsx"
+import NotFound from "./pages/404.jsx"
 import About from "./pages/About.jsx"
 import Vans from "./pages/Vans.jsx"
 import Details from "./pages/Details.jsx"
@@ -24,9 +25,12 @@ function App() {
         <Routes>
             <Route path="/" element={<Layout />}>
                 <Route index element={<Home />}/>
+                <Route path="*" element={<NotFound />}/>
+
                 <Route path="about" element={<About />}/>
                 <Route path="vans" element={<Vans />} />
                 <Route path="vans/:id" element={<Details />} />
+
                 <Route path="host" element={<HostLayout />}>
                     <Route index element={<Dashboard />}/>
                     <Route path="income" element={<Income />}/>
@@ -38,6 +42,7 @@ function App() {
                         <Route path="photos" element={<HostVanPhotos />} />
                     </Route>
                 </Route>
+
             </Route>
         </Routes>
     </HashRouter>
