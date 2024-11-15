@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react"
+import { useSearchParams, button } from "react-router-dom"
+
 import ProductTile from "../components/ProductTile.jsx"
 
 
 export default function Vans() {
     const [vehicleData, setVehicleData] = useState([])
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const typeFilter = searchParams.get("type")
 
     useEffect(() => {
         fetch("/api/vans")
@@ -11,15 +16,29 @@ export default function Vans() {
             .then((json) => setVehicleData(json.vans))
     }, [])
 
-    const productElements = vehicleData.map(
-        vehicle => (<ProductTile vehicle={vehicle}/>)
-    )
+    const productElements = typeFilter ? 
+        vehicleData.filter((obj) => obj.type.toLowerCase() === typeFilter.toLowerCase()) 
+        : vehicleData
 
     return (
         <div className="van-list-container">
             <h1>Explore our van options</h1>
+
+            <div className="van-list-filter-buttons">
+                <button onClick={()=>{setSearchParams({type: "simple"})}} className={`van-type simple ${typeFilter === "simple" ? "selected" : ""}`}>Simple</button>
+                <button onClick={()=>{setSearchParams({type: "luxury"})}} className={`van-type luxury ${typeFilter === "luxury" ? "selected" : ""}`}>Luxury</button>
+                <button onClick={()=>{setSearchParams({type: "rugged"})}} className={`van-type rugged ${typeFilter === "rugged" ? "selected" : ""}`}>Rugged</button>
+
+                { typeFilter ? (<button onClick={()=>{setSearchParams({})}} className="van-type clear-filters">Clear Filters</button>)
+                  : null
+                }
+            </div>
+
             <div className="van-list">
-                {productElements}
+                {
+                    productElements
+                    .map(vehicle => (<ProductTile vehicle={vehicle}/>))
+                }
             </div>
         </div>
     )
