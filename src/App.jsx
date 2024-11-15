@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
+import { HashRouter, Routes, Route, Link } from "react-router-dom"
 
 import Home from "./pages/Home.jsx"
 import About from "./pages/About.jsx"
@@ -13,7 +13,7 @@ import Reviews from "./pages/host/Reviews.jsx"
 function App() {
 
   return (
-    <BrowserRouter basename="DJS/08-ReactRouter/public/">   {/** DEV: Set base project base URL. REMOVE IN PROD */}
+    <HashRouter basename="/">
       <Routes>
 
         <Route element={<Layout />}>
@@ -27,7 +27,7 @@ function App() {
         </Route>
 
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
