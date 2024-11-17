@@ -1,13 +1,34 @@
-import React from "react"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useState } from "react"
+import { useNavigate, Navigate, useLocation, useOutletContext } from "react-router-dom"
+import { loginUser } from "../dev/api.js"
+
 
 export default function Login() {
-    const [loginFormData, setLoginFormData] = React.useState({ email: "", password: "" })
-    const location = useLocation()
+    const auth = localStorage.getItem("loggedin")
+    if (auth) return (<Navigate to="/host" />)
     
+    const [loginFormData, setLoginFormData] = useState({ email: "", password: "" })
+    const location = useLocation()
+    const [status, setStatus] = useState("idle")
+    const [error, setError] = useState(null)
+    const navigate = useNavigate();
+
+
     function handleSubmit(event) {
         event.preventDefault()
-        console.log(loginFormData)
+        setStatus("submitting")
+        loginUser(loginFormData)
+            .then(data => {
+                setError(null)
+                localStorage.setItem("loggedin", true)
+                navigate(-1, { replace: true })
+            })
+            .catch(err => {
+                setError(err)
+            })
+            .finally(() => {
+                setStatus("idle")
+            })
     }
 
     function handleChange(event) {
@@ -22,7 +43,10 @@ export default function Login() {
 
     return (
         <div className="login-container">
+            
             <h1>{signInMessage}</h1>
+            { error ? (<h3 className="login-error">{error.message}</h3>) : null}
+            
             <form onSubmit={handleSubmit} className="login-form">
                 <input
                     name="email"
@@ -38,7 +62,12 @@ export default function Login() {
                     placeholder="Password"
                     value={loginFormData.password}
                 />
-                <button>Log in</button>
+                <button disabled={status === "submitting"}>
+                    { status === "submitting"
+                        ? "Logging in..."
+                        : "Log in"
+                    }
+                </button>
             </form>
         </div>
     )

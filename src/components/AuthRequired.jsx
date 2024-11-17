@@ -1,18 +1,19 @@
 import React from "react"
-import { Outlet, Navigate } from "react-router-dom"
+import { Outlet, Navigate, useOutletContext } from "react-router-dom"
 
 export default function AuthRequired() {
-    const authenticated = false
+    const auth = localStorage.getItem("loggedin")
     
-    if (authenticated) {
+    if (auth) {
         // Allow routing to Protected Route
-        return <Outlet />
+        return <Outlet context={ auth }/>
     }
 
     return (
         <Navigate 
             to="/login" 
-            state={{message: "You must log in first"}} 
+            state={{message: "You must log in first"}}
+            replace
         />
     )
 }

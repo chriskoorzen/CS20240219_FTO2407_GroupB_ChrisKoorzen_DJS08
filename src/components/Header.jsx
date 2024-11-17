@@ -12,6 +12,11 @@ export default function Header(){
 
     const setActive = ({isActive}) => {return isActive ? activeStyles : null}
 
+    function fakeLogOut() {
+        localStorage.removeItem("loggedin")
+    }
+    const auth = localStorage.getItem("loggedin")
+
     return (
         <header>
             <Link className="site-logo" to="/">#VanLife</Link>
@@ -23,6 +28,8 @@ export default function Header(){
                 <Link to="login" className="login-link">
                     <img src={avatarImgUrl} className="login-icon"/>
                 </Link>
+
+                <button onClick={fakeLogOut}>x</button>
             </nav>
         </header>
     )
