@@ -7,6 +7,9 @@ import About from "./pages/About.jsx"
 import Vans from "./pages/Vans.jsx"
 import Details from "./pages/Details.jsx"
 
+import Login from "./pages/Login.jsx"
+
+import AuthRequired from "./components/AuthRequired.jsx"
 import HostLayout from "./components/HostLayout.jsx"
 import Dashboard from "./pages/host/Dashboard.jsx"
 import Income from "./pages/host/Income.jsx"
@@ -30,17 +33,21 @@ function App() {
                 <Route path="about" element={<About />}/>
                 <Route path="vans" element={<Vans />} />
                 <Route path="vans/:id" element={<Details />} />
+                
+                <Route path="login" element={<Login />}/>
 
-                <Route path="host" element={<HostLayout />}>
-                    <Route index element={<Dashboard />}/>
-                    <Route path="income" element={<Income />}/>
-                    <Route path="reviews" element={<Reviews />}/>
-                    <Route path="vans" element={<HostVans />}/>
-                    <Route path="vans/:id" element={<HostVanDetail />}>
-                        <Route index element={<HostVanInfo />} />
-                        <Route path="pricing" element={<HostVanPricing />} />
-                        <Route path="photos" element={<HostVanPhotos />} />
-                    </Route>
+                <Route element={<AuthRequired />}>
+                  <Route path="host" element={<HostLayout />}>
+                      <Route index element={<Dashboard />}/>
+                      <Route path="income" element={<Income />}/>
+                      <Route path="reviews" element={<Reviews />}/>
+                      <Route path="vans" element={<HostVans />}/>
+                      <Route path="vans/:id" element={<HostVanDetail />}>
+                          <Route index element={<HostVanInfo />} />
+                          <Route path="pricing" element={<HostVanPricing />} />
+                          <Route path="photos" element={<HostVanPhotos />} />
+                      </Route>
+                  </Route>
                 </Route>
 
             </Route>
