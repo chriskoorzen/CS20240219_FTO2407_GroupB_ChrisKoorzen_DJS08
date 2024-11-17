@@ -3,22 +3,46 @@ import { useSearchParams } from "react-router-dom"
 
 import ProductTile from "../components/ProductTile.jsx"
 
+import { getVans } from "../dev/api.js"
+
 
 export default function Vans() {
     const [vehicleData, setVehicleData] = useState([])
     const [searchParams, setSearchParams] = useSearchParams()
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
 
     const typeFilter = searchParams.get("type")
 
     useEffect(() => {
-        fetch("/api/vans")
-            .then((response) => response.json())
-            .then((json) => setVehicleData(json.vans))
+        async function loadVans() {
+            setLoading(true)
+            try {
+                const data = await getVans()
+                setVehicleData(data)
+            } catch (err) {
+                setError(err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        loadVans()
+
     }, [])
 
     const productElements = typeFilter ? 
         vehicleData.filter((obj) => obj.type.toLowerCase() === typeFilter.toLowerCase()) 
         : vehicleData
+
+
+    if (loading) {
+        return <h1>Loading...</h1>
+    }
+    
+    if (error) {
+        return <h1>There was an error: {error.message}</h1>
+    }
 
     return (
         <div className="van-list-container">
